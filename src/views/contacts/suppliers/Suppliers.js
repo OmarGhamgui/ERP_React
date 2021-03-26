@@ -10,9 +10,9 @@ import {
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addClient, removeClient } from "src/JS/actions";
 import CIcon from "@coreui/icons-react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
+import { addSupplier } from "../../../JS/actions";
 // const getBadge = status => {
 //     switch (status) {
 //       case 'Active': return 'success'
@@ -22,48 +22,49 @@ import { Modal, Button, Form, Spinner } from "react-bootstrap";
 //       default: return 'primary'
 //     }
 //   }
-const fields = ["name", "phone", "address", "Menu"];
+const fields = ["name", "email", "phone", "address", "Menu"];
 
-const Clients = () => {
+const Suppliers = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const addNewClient = async () => {
+
+  const addNewSupplier = async () => {
     await dispatch(
-       addClient({
-        name:name,
-        phone:phone,
-        address:address,
+      addSupplier({
+        name: name,
+        email: email,
+        phone: phone,
+        address: address,
       })
     )
-    .then(setModalShow(false))
-    .then(setClientList([...clientList,{name,phone,address}]))
+      .then(setSupplierList([...supplierList, { name, email, phone, address }]))
+      .then(setModalShow(false));
   };
-
-  const deleteHandler = async (e)=>{
-    await dispatch(removeClient(e))
-    .then(setClientList(clientList.filter((el)=>el._id !== e._id)))
-  }
 
   const [modalShow, setModalShow] = useState(false);
-  let loading = useSelector(state => state.clientReducer.loading)
-  const [clientList, setClientList] = useState([]);
+  const loading = useSelector((state) => state.clientReducer.loading);
+  const [supplierList, setSupplierList] = useState([]);
 
   const fetchData = async () => {
-  await axios
-      .get("http://localhost:4000/clients")
-      .then((res) => setClientList(res.data))
+
+    await axios
+      .get("http://localhost:4000/suppliers")
+      .then((res) => setSupplierList(res.data));
   };
 
-  useEffect( () => {
+  useEffect(() => {
     fetchData();
-  },[]);
-  
-  if(loading){
-    return <Spinner animation="border" role="status" className='d-flex mx-auto'>
+  }, []);
+
+
+
+  if (loading) {
+    return <Spinner animation="border" role="status"  className='d-flex mx-auto'>
     <span className="sr-only">Loading...</span>
-  </Spinner>
+  </Spinner>;
   }
   return (
     <>
@@ -79,7 +80,7 @@ const Clients = () => {
             >
               <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                  Ajouter un client
+                  Ajouter un Fournisseur
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
@@ -94,6 +95,15 @@ const Clients = () => {
                       }}
                     />
                     <Form.Text className="text-muted"></Form.Text>
+                  </Form.Group>
+
+                  <Form.Group controlId="formBasicPassword">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="Entrer le mail"
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                   </Form.Group>
 
                   <Form.Group controlId="formBasicPassword">
@@ -114,12 +124,8 @@ const Clients = () => {
                     />
                   </Form.Group>
 
-                  <Button
-                    variant="info"
-                    type="submit"
-                    onClick={addNewClient}
-                  >
-                    Submit
+                  <Button variant="info" type="submit" onClick={addNewSupplier}>
+                    Ajouter
                   </Button>
                 </Form>
               </Modal.Body>
@@ -128,21 +134,21 @@ const Clients = () => {
               </Modal.Footer>
             </Modal>
             <CCardHeader className="d-flex justify-content-between">
-              <h4>Liste des clients</h4>{" "}
+              <h4>Liste des Fournisseurs</h4>{" "}
               <CButton
                 onClick={() => setModalShow(true)}
                 className="mr-5"
                 color="info"
                 size="md"
               >
-                Ajouter un client{" "}
+                Ajouter un fournisseur{" "}
                 <CIcon className="ml-3" size={"lg"} name={"cilUserFollow"} />
               </CButton>{" "}
             </CCardHeader>
 
             <CCardBody>
               <CDataTable
-                items={clientList}
+                items={supplierList}
                 fields={fields}
                 hover
                 striped
@@ -154,13 +160,15 @@ const Clients = () => {
                   Menu: (item) => (
                     <td>
                       <div className="d-flex">
-                        <button 
-                        onClick={()=>deleteHandler(item)}
+                        <button>Supprimer</button>
+                        <CButton
+                          className="w-25 ml-5"
+                          block
+                          color="dark"
+                          size="md"
                         >
-                          Supprimer
-                        </button>
-                        <CButton className="w-25 ml-5" block color="dark" size="md">Modifier</CButton>
-
+                          Modifier
+                        </CButton>
                       </div>
                     </td>
                   ),
@@ -174,4 +182,4 @@ const Clients = () => {
   );
 };
 
-export default Clients;
+export default Suppliers;

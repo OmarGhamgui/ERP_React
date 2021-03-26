@@ -9,8 +9,8 @@ const persistConfig = {
   key: "User",
   timeout: null,
   storage,
-  whitelist: ["clientReducer"],
-  blacklist: ["changeStateReducer"]
+  whitelist: [],
+  blacklist: ["changeStateReducer","clientReducer","supplierReducer"]
 };
 const middleware = [thunkMiddleware];
 const composeEnhancers =
@@ -25,10 +25,9 @@ const enhancer = composeEnhancers(
   // other store enhancers if any
 );
 
-
-
 const persistedReducers = persistReducer(persistConfig, combineReducer);
 
 const store = createStore(persistedReducers, enhancer);
 export default store;
 export const persistor = persistStore(store);
+

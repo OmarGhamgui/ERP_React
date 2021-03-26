@@ -10,9 +10,9 @@ import {
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addClient, removeClient } from "src/JS/actions";
 import CIcon from "@coreui/icons-react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
+import { addArticle } from "src/JS/actions";
 // const getBadge = status => {
 //     switch (status) {
 //       case 'Active': return 'success'
@@ -22,51 +22,53 @@ import { Modal, Button, Form, Spinner } from "react-bootstrap";
 //       default: return 'primary'
 //     }
 //   }
-const fields = ["name", "phone", "address", "Menu"];
+const fields = ["name", "ref", "category", "Menu"];
 
-const Clients = () => {
+const Articles = () => {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const addNewClient = async () => {
+  const [ref, setRef] = useState("");
+  const [category, setCategory] = useState("");
+  const addNewArticle = async () => {
     await dispatch(
-       addClient({
+       addArticle({
         name:name,
-        phone:phone,
-        address:address,
+        ref:ref,
+        category:category,
       })
     )
     .then(setModalShow(false))
-    .then(setClientList([...clientList,{name,phone,address}]))
+    .then(setArticleList([...articleList,{name,ref,category}]))
   };
 
-  const deleteHandler = async (e)=>{
-    await dispatch(removeClient(e))
-    .then(setClientList(clientList.filter((el)=>el._id !== e._id)))
-  }
+//   const deleteHandler = async (e)=>{
+//     await dispatch(removeClient(e))
+//     .then(setClientList(clientList.filter((el)=>el._id !== e._id)))
+//   }
 
   const [modalShow, setModalShow] = useState(false);
-  let loading = useSelector(state => state.clientReducer.loading)
-  const [clientList, setClientList] = useState([]);
+  let loading = useSelector((state) => state.clientReducer.loading);
+  const [articleList, setArticleList] = useState([]);
 
   const fetchData = async () => {
-  await axios
-      .get("http://localhost:4000/clients")
-      .then((res) => setClientList(res.data))
+    await axios
+      .get("http://localhost:4000/articles")
+      .then((res) => setArticleList(res.data));
   };
 
-  useEffect( () => {
+  useEffect(() => {
     fetchData();
-  },[]);
-  
-  if(loading){
-    return <Spinner animation="border" role="status" className='d-flex mx-auto'>
-    <span className="sr-only">Loading...</span>
-  </Spinner>
+  }, []);
+
+  if (loading) {
+    return (
+      <Spinner animation="border" role="status" className="d-flex mx-auto">
+        <span className="sr-only">Loading...</span>
+      </Spinner>
+    );
   }
   return (
-    <>
+       <>
       <CRow>
         <CCol>
           <CCard>
@@ -85,10 +87,10 @@ const Clients = () => {
               <Modal.Body>
                 <Form>
                   <Form.Group>
-                    <Form.Label>Nom et Prénom</Form.Label>
+                    <Form.Label>Nom de l'article</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Entrer le nom"
+                      placeholder="Nom de l'article..."
                       onChange={(e) => {
                         setName(e.target.value);
                       }}
@@ -97,27 +99,27 @@ const Clients = () => {
                   </Form.Group>
 
                   <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Numéro mobile</Form.Label>
+                    <Form.Label>Référence </Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Entrer le numéro"
-                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="Référence de l'article..."
+                      onChange={(e) => setRef(e.target.value)}
                     />
                   </Form.Group>
 
                   <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Adresse</Form.Label>
+                    <Form.Label>Catégorie</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Entrer l'adresse"
-                      onChange={(e) => setAddress(e.target.value)}
+                      placeholder="Catégorie..."
+                      onChange={(e) => setCategory(e.target.value)}
                     />
                   </Form.Group>
 
                   <Button
                     variant="info"
                     type="submit"
-                    onClick={addNewClient}
+                    onClick={addNewArticle}
                   >
                     Submit
                   </Button>
@@ -128,21 +130,21 @@ const Clients = () => {
               </Modal.Footer>
             </Modal>
             <CCardHeader className="d-flex justify-content-between">
-              <h4>Liste des clients</h4>{" "}
+              <h4>Liste des articles</h4>{" "}
               <CButton
                 onClick={() => setModalShow(true)}
                 className="mr-5"
                 color="info"
                 size="md"
               >
-                Ajouter un client{" "}
+                Ajouter un article{" "}
                 <CIcon className="ml-3" size={"lg"} name={"cilUserFollow"} />
               </CButton>{" "}
             </CCardHeader>
 
             <CCardBody>
               <CDataTable
-                items={clientList}
+                items={articleList}
                 fields={fields}
                 hover
                 striped
@@ -155,7 +157,7 @@ const Clients = () => {
                     <td>
                       <div className="d-flex">
                         <button 
-                        onClick={()=>deleteHandler(item)}
+                        // onClick={()=>deleteHandler(item)}
                         >
                           Supprimer
                         </button>
@@ -174,4 +176,4 @@ const Clients = () => {
   );
 };
 
-export default Clients;
+export default Articles;

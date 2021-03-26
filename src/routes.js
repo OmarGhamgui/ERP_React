@@ -4,6 +4,11 @@ const Clients = React.lazy(() => import('./views/contacts/clients/Clients'))
 const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));
 const Tables = React.lazy(() => import('./views/base/tables/Tables'));
 
+const Suppliers = React.lazy(() => import('./views/contacts/suppliers/Suppliers'))
+
+const Articles = React.lazy(() => import('./views/achats/Articles'))
+
+
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/base/cards/Cards'));
 const Carousels = React.lazy(() => import('./views/base/carousels/Carousels'));
@@ -47,10 +52,12 @@ const routes = [
   { path: '/theme/typography', name: 'Typography', component: Typography },
 
   { path: '/contacts', name: 'Contacts', component: Cards, exact: true },
-  { path: '/contacts/clients', name: 'Contacts', component: Clients , exact: true },
-  { path: '/contacts/fournisseurs', name: 'Fournisseurs', component: Cards, exact: true },
+  { path: '/contacts/clients', name: 'Clients', component: Clients , exact: true },
+  { path: '/contacts/fournisseurs', name: 'Fournisseurs', component: Suppliers, exact: true },
 
-
+  { path: '/achats', name: "Gestion d'achats", component: Cards, exact: true },
+  { path: '/achats/articles', name: 'Articles', component: Articles , exact: true },
+  { path: '/achats/autres', name: 'Fournisseurs', component: Suppliers, exact: true },
 
   { path: '/base', name: 'Base', component: Cards, exact: true },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', component: Breadcrumbs },

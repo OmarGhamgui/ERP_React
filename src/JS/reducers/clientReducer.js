@@ -19,14 +19,14 @@ const initialState = {
         return {
           ...state,
           loading: false,
-          client: payload.client,
+          client: payload,
         };
       case ADD_FAIL:
         cogoToast.error("erreur .. vérifier les données");
         return {
           ...state,
           loading: false,
-          errors: payload.client,
+          errors: payload.data,
         }
         case REMOVE_CLIENT:   
         return {
@@ -38,7 +38,7 @@ const initialState = {
         return{
           ...state,
           loading:false,
-          payload:payload
+          client:payload.data
         }
       default:
         return state;

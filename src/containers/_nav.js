@@ -36,7 +36,7 @@ const _nav =  [
     _tag: 'CSidebarNavDropdown',
     name: 'Contacts',
     route: '/contacts',
-    icon: 'cil-puzzle',
+    icon: 'cil-user',
     _children: [
       {
         _tag: 'CSidebarNavItem',
@@ -47,6 +47,25 @@ const _nav =  [
         _tag: 'CSidebarNavItem',
         name: 'Fournisseurs',
         to: '/contacts/fournisseurs',
+      },
+     
+    ],
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: "Gestion d'achats",
+    route: '/achats',
+    icon: 'cil-dollar',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Articles',
+        to: '/achats/articles',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Autre..',
+        to: '/achats/autres',
       },
      
     ],
