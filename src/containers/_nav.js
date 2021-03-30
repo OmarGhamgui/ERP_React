@@ -62,11 +62,22 @@ const _nav =  [
         name: 'Articles',
         to: '/achats/articles',
       },
+     
+     
+    ],
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: "Gestion de ventes",
+    route: '/sales',
+    icon: 'cil-dollar',
+    _children: [
       {
         _tag: 'CSidebarNavItem',
-        name: 'Autre..',
-        to: '/achats/autres',
+        name: 'Produits',
+        to: '/sales/products',
       },
+     
      
     ],
   },

@@ -5,6 +5,9 @@ import {
   ADD_ARTICLE_SUCCESS,
   ADD_CLIENT,
   ADD_FAIL,
+  ADD_PRODUCT,
+  ADD_PRODUCT_FAIL,
+  ADD_PRODUCT_SUCCESS,
   ADD_SUCCESS,
   ADD_SUPPLIER,
   ADD_SUPPLIER_FAIL,
@@ -98,4 +101,37 @@ export const addArticle = (newArticle) => async (dispatch) => {
     });
   }
 };
+
+// Add a product
+
+export const addProduct = (newProduct) => async (dispatch) => {
+  await dispatch({
+    type: ADD_PRODUCT,
+  });
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const addRes = await axios.post(
+      "http://localhost:4000/products",
+      newProduct
+    );
+    dispatch({
+      type: ADD_PRODUCT_SUCCESS,
+      payload: addRes.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ADD_PRODUCT_FAIL,
+      payload: error.response.data,
+    });
+  }
+};
+
+//Add article to one product
+
+
+
+
+
+
 

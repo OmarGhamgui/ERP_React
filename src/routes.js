@@ -7,6 +7,7 @@ const Tables = React.lazy(() => import('./views/base/tables/Tables'));
 const Suppliers = React.lazy(() => import('./views/contacts/suppliers/Suppliers'))
 
 const Articles = React.lazy(() => import('./views/achats/Articles'))
+const Products = React.lazy(() => import('./views/sales/Products'))
 
 
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'));
@@ -57,7 +58,9 @@ const routes = [
 
   { path: '/achats', name: "Gestion d'achats", component: Cards, exact: true },
   { path: '/achats/articles', name: 'Articles', component: Articles , exact: true },
-  { path: '/achats/autres', name: 'Fournisseurs', component: Suppliers, exact: true },
+
+  { path: '/sales', name: "Gestion d'achats", component: Cards, exact: true },
+  { path: '/sales/products', name: 'Products', component: Products , exact: true },
 
   { path: '/base', name: 'Base', component: Cards, exact: true },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', component: Breadcrumbs },
