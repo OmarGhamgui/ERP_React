@@ -18,7 +18,7 @@ import { addProduct } from "src/JS/actions";
 const Sales = () => {
   const fields = ["name", "ref", "usedArticles"];
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [modalShow, setModalShow] = useState(false);
   const [name, setName] = useState();
@@ -28,31 +28,33 @@ const Sales = () => {
   const [articleInput, setArticleInput] = useState("");
   const [productList, setProductList] = useState([]);
 
-
   const addNewProduct = async () => {
-    await dispatch(addProduct({
-     name,
-     ref,
-     usedArticles
-    }))
-    .then(setModalShow(false))
-    .then(setProductList([...productList,{name,ref,usedArticles}]))
-  }
-  
+    await dispatch(
+      addProduct({
+        name,
+        ref,
+        usedArticles,
+      })
+    )
+      .then(setModalShow(false))
+      .then(setProductList([...productList, { name, ref, usedArticles }]))
+      .then(setUsedArticles([]));
+  };
+
   useEffect(() => {
     fetchArticles();
-  },[]);
+  }, []);
 
   const fetchArticles = async () => {
     await axios
       .get("http://localhost:4000/articles")
       .then((res) => {
-      const items=res.data
-      items.map(item=>
-        articles.push({key:item._id,value:item.ref,text:item.name})
-      )
+        const items = res.data;
+        items.map((item) =>
+          articles.push({ key: item._id, value: item.ref, text: item.name })
+        );
       })
-      .then(console.log(articles))
+      .then(console.log(articles));
   };
 
   return (
@@ -80,7 +82,7 @@ const Sales = () => {
                       type="text"
                       placeholder="Nom du produit"
                       onChange={(e) => {
-                         setName(e.target.value);
+                        setName(e.target.value);
                       }}
                     />
                     <Form.Text className="text-muted"></Form.Text>
@@ -91,45 +93,50 @@ const Sales = () => {
                     <Form.Control
                       type="text"
                       placeholder="Référence du produit"
-                         onChange={(e) => setRef(e.target.value)}
+                      onChange={(e) => setRef(e.target.value)}
                     />
                   </Form.Group>
 
                   <Form.Group controlId="formBasicPassword">
                     <Form.Label>Articles utilisés</Form.Label>
-
                     <Dropdown
                       placeholder="Select Country"
                       fluid
                       search
                       selection
                       options={articles}
-                      onChange={(e)=>setArticleInput(e.target.value)}
+                      onChange={(e) => setArticleInput(e.target.value)}
                     />
                   </Form.Group>
                   <Form.Group controlId="formBasicPassword">
                     <Form.Label className="mr-5">Quantité</Form.Label>
-                    <input type="number" id="quantity" name="quantity" min="1" max="50"
+                    <input
+                      type="number"
+                      id="quantity"
+                      name="quantity"
+                      min="1"
+                      max="50"
                     />
                     <CButton
-                  key='1'
-                  color="info"
-                  size="md"
-                  className="m-2"
-                  onClick={()=>usedArticles.push(articleInput)}
-                >
-                    Ajouter
-                </CButton>                    
+                      key="1"
+                      color="info"
+                      size="md"
+                      className="m-2"
+                      onClick={() => usedArticles.push(articleInput)}
+                    >
+                      Ajouter
+                    </CButton>
                   </Form.Group>
-                  <Form.Group>   <div>
-                    {usedArticles && usedArticles.map((item,i)=> <h2 key={i}> {item} </h2>)}  
-                  </div></Form.Group>
-               
-                  <Button
-                    variant="info"
-                    type="submit"
-                     onClick={addNewProduct}
-                  >
+                  <Form.Group>
+                    {" "}
+                    <div>
+                      {usedArticles &&
+                        usedArticles.map((item, i) => (
+                          <h2 key={i}> {item} </h2>
+                        ))}
+                    </div>
+                  </Form.Group>
+                  <Button variant="info" type="submit" onClick={addNewProduct}>
                     Submit
                   </Button>
                 </Form>
