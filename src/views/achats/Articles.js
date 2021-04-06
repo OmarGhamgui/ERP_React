@@ -12,7 +12,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import CIcon from "@coreui/icons-react";
 import { Modal, Button, Form, Spinner } from "react-bootstrap";
-import { addArticle } from "src/JS/actions";
+import { addArticle,removeArticle } from "src/JS/actions";
 // const getBadge = status => {
 //     switch (status) {
 //       case 'Active': return 'success'
@@ -41,10 +41,10 @@ const Articles = () => {
     .then(setArticleList([...articleList,{name,ref,category}]))
   };
 
-//   const deleteHandler = async (e)=>{
-//     await dispatch(removeClient(e))
-//     .then(setClientList(clientList.filter((el)=>el._id !== e._id)))
-//   }
+  const deleteHandler = async (e)=>{
+    await dispatch(removeArticle(e))
+    .then(setArticleList(articleList.filter((el)=>el._id !== e._id)))
+  }
 
   const [modalShow, setModalShow] = useState(false);
   let loading = useSelector((state) => state.clientReducer.loading);
@@ -157,7 +157,7 @@ const Articles = () => {
                     <td>
                       <div className="d-flex">
                         <button 
-                        // onClick={()=>deleteHandler(item)}
+                        onClick={()=>deleteHandler(item)}
                         >
                           Supprimer
                         </button>

@@ -13,10 +13,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Dropdown } from "semantic-ui-react";
 import { useDispatch } from "react-redux";
-import { addProduct } from "src/JS/actions";
+import { addProduct, removeProduct } from "src/JS/actions";
 
 const Sales = () => {
-  const fields = ["name", "ref", "usedArticles"];
+  const fields = ["name", "ref", "usedArticles", "Menu"];
 
   const dispatch = useDispatch();
 
@@ -24,8 +24,8 @@ const Sales = () => {
   const [name, setName] = useState();
   const [ref, setRef] = useState();
   const [articles, setArticles] = useState([]);
-  const [usedArticles, setUsedArticles] = useState([]);
-  const [articleInput, setArticleInput] = useState("");
+  const [articlesProduct, setArticlesProduct] = useState([]);
+  const [articleInput, setArticleInput] = useState();
   const [productList, setProductList] = useState([]);
 
   const addNewProduct = async () => {
@@ -33,16 +33,24 @@ const Sales = () => {
       addProduct({
         name,
         ref,
-        usedArticles,
+        usedArticles:articlesProduct,
       })
     )
       .then(setModalShow(false))
-      .then(setProductList([...productList, { name, ref, usedArticles }]))
-      .then(setUsedArticles([]));
+      .then(setProductList([...productList, { name, ref, usedArticles:articlesProduct }]))
+      .then(setArticlesProduct([]));
+  };
+
+  const deleteHandler = async (e) => {
+    await dispatch(removeProduct(e)).then(
+      setProductList(productList.filter((el) => el._id !== e._id))
+    );
   };
 
   useEffect(() => {
     fetchArticles();
+    fetchProducts();
+    // console.log(usedArticles)
   }, []);
 
   const fetchArticles = async () => {
@@ -55,6 +63,12 @@ const Sales = () => {
         );
       })
       .then(console.log(articles));
+  };
+
+  const fetchProducts = async () => {
+    await axios
+      .get("http://localhost:4000/products")
+      .then((res) => setProductList(res.data));
   };
 
   return (
@@ -105,34 +119,35 @@ const Sales = () => {
                       search
                       selection
                       options={articles}
-                      onChange={(e) => setArticleInput(e.target.value)}
+                      onChange={(e) => setArticleInput(e.target.outerText)}
                     />
                   </Form.Group>
                   <Form.Group controlId="formBasicPassword">
                     <Form.Label className="mr-5">Quantité</Form.Label>
-                    <input
+                    {/* <input
                       type="number"
                       id="quantity"
                       name="quantity"
                       min="1"
                       max="50"
-                    />
+                    /> */}
                     <CButton
                       key="1"
                       color="info"
                       size="md"
                       className="m-2"
-                      onClick={() => usedArticles.push(articleInput)}
+                      onClick={ () =>
+                        setArticlesProduct([...articlesProduct, articleInput])
+                      }
                     >
                       Ajouter
                     </CButton>
                   </Form.Group>
                   <Form.Group>
-                    {" "}
                     <div>
-                      {usedArticles &&
-                        usedArticles.map((item, i) => (
-                          <h2 key={i}> {item} </h2>
+                      {articlesProduct &&
+                        articlesProduct.map((item, i) => (
+                          <div key={i}> {item} </div>
                         ))}
                     </div>
                   </Form.Group>
@@ -168,21 +183,25 @@ const Sales = () => {
                 size="sm"
                 itemsPerPage={10}
                 pagination
-                // scopedSlots={{
-                //   Menu: (item) => (
-                //     <td>
-                //       <div className="d-flex">
-                //         <button
-                //         // onClick={()=>deleteHandler(item)}
-                //         >
-                //           Supprimer
-                //         </button>
-                //         <CButton className="w-25 ml-5" block color="dark" size="md">Modifier</CButton>
-
-                //       </div>
-                //     </td>
-                //   ),
-                // }}
+                scopedSlots={{
+                  Menu: (item) => (
+                    <td>
+                      <div className="d-flex">
+                        <button onClick={() => deleteHandler(item)}>
+                          Supprimer
+                        </button>
+                        <CButton
+                          className="w-25 ml-5"
+                          block
+                          color="dark"
+                          size="md"
+                        >
+                          Modifier
+                        </CButton>
+                      </div>
+                    </td>
+                  ),
+                }}
               />
             </CCardBody>
           </CCard>

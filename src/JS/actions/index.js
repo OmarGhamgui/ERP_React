@@ -14,6 +14,9 @@ import {
   ADD_SUPPLIER_SUCCESS,
   REMOVE_CLIENT,
   REMOVE_SUCCESS,
+  REMOVE_PRODUCT,
+  REMOVE_PRODUCT_SUCCESS,
+  REMOVE_ARTICLE,REMOVE_ARTICLE_SUCCESS
 } from "../constants/actions-types";
 
 export const removeClient = (Client) => async (dispatch) => {
@@ -102,6 +105,24 @@ export const addArticle = (newArticle) => async (dispatch) => {
   }
 };
 
+// Remove an article
+export const removeArticle = (Article) => async (dispatch) => {
+  await dispatch({
+    type: REMOVE_ARTICLE,
+  });
+
+  try {
+    const removeRes = await axios.delete(
+      `http://localhost:4000/article/${Article._id}`
+    );
+
+    dispatch({
+      type: REMOVE_ARTICLE_SUCCESS,
+      payload: removeRes.data,
+    });
+  } catch (error) {}
+};
+
 // Add a product
 
 export const addProduct = (newProduct) => async (dispatch) => {
@@ -110,7 +131,6 @@ export const addProduct = (newProduct) => async (dispatch) => {
   });
   try {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-
     const addRes = await axios.post(
       "http://localhost:4000/products",
       newProduct
@@ -125,6 +145,25 @@ export const addProduct = (newProduct) => async (dispatch) => {
       payload: error.response.data,
     });
   }
+};
+
+
+//remove a product
+export const removeProduct = (Product) => async (dispatch) => {
+  await dispatch({
+    type: REMOVE_PRODUCT,
+  });
+
+  try {
+    const removeRes = await axios.delete(
+      `http://localhost:4000/products/${Product._id}`
+    );
+
+    dispatch({
+      type: REMOVE_PRODUCT_SUCCESS,
+      payload: removeRes.data,
+    });
+  } catch (error) {}
 };
 
 //Add article to one product
