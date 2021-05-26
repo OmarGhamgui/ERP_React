@@ -1,4 +1,4 @@
-import { ADD_CLIENT, ADD_FAIL, ADD_SUCCESS, REMOVE_CLIENT, REMOVE_SUCCESS } from "../constants/actions-types";
+import { ADD_CLIENT, ADD_FAIL, ADD_SUCCESS, EDIT_CLIENT, EDIT_CLIENT_FAIL, EDIT_CLIENT_SUCCESS, REMOVE_CLIENT, REMOVE_SUCCESS } from "../constants/actions-types";
 import cogoToast from "cogo-toast"
 
 const initialState = {
@@ -40,6 +40,25 @@ const initialState = {
           loading:false,
           client:payload.data
         }
+        case EDIT_CLIENT:
+        return {
+          ...state,
+          loading: true,
+        };
+        case EDIT_CLIENT_SUCCESS:
+          cogoToast.success("client modifié");
+          return {
+            ...state,
+            loading: false,
+            client: payload,
+          };
+          case EDIT_CLIENT_FAIL:
+            cogoToast.error("erreur .. vérifier les données");
+            return {
+              ...state,
+              loading: false,
+              errors: payload.data,
+            }
       default:
         return state;
     }

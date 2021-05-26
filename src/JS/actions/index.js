@@ -16,7 +16,10 @@ import {
   REMOVE_SUCCESS,
   REMOVE_PRODUCT,
   REMOVE_PRODUCT_SUCCESS,
-  REMOVE_ARTICLE,REMOVE_ARTICLE_SUCCESS
+  REMOVE_ARTICLE,REMOVE_ARTICLE_SUCCESS,
+  EDIT_CLIENT,
+  EDIT_CLIENT_SUCCESS,
+  EDIT_CLIENT_FAIL
 } from "../constants/actions-types";
 
 export const removeClient = (Client) => async (dispatch) => {
@@ -42,7 +45,7 @@ export const addClient = (newClient) => async (dispatch) => {
   });
   try {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    const addRes = await axios.post("http://localhost:4000/clients", newClient);
+    const addRes = await axios.post("http://localhost:4000/clients/", newClient);
     dispatch({
       type: ADD_SUCCESS,
       payload: addRes.data,
@@ -55,6 +58,26 @@ export const addClient = (newClient) => async (dispatch) => {
   }
 };
 
+export const editClient = (newClient) => async (dispatch) => {
+  await dispatch({
+    type: EDIT_CLIENT,
+  });
+  try {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const addRes = await axios.put(`http://localhost:4000/clients/${newClient._id}`, 
+    {name:newClient.name,phone:newClient.phone,address:newClient.address});
+    dispatch({
+      type: EDIT_CLIENT_SUCCESS,
+      payload: addRes.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: EDIT_CLIENT_FAIL,
+      payload: error.response.data,
+    });
+  }
+};
+    
 // SUPPLIER
 
 export const addSupplier = (newSupplier) => async (dispatch) => {

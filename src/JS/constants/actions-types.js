@@ -5,6 +5,10 @@ export const ADD_CLIENT ="ADD_CLIENT";
 export const ADD_SUCCESS="ADD_SUCCESS";
 export const ADD_FAIL="ADD_FAIL";
 
+export const EDIT_CLIENT ="EDIT_CLIENT";
+export const EDIT_CLIENT_SUCCESS="EDIT_CLIENT_SUCCESS";
+export const EDIT_CLIENT_FAIL ="EDIT_CLIENT_FAIL";
+
 // Supplier
 
 export const ADD_SUPPLIER ="ADD_SUPPLIER";

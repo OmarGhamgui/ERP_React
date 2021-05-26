@@ -8,6 +8,8 @@ const Suppliers = React.lazy(() => import('./views/contacts/suppliers/Suppliers'
 
 const Articles = React.lazy(() => import('./views/achats/Articles'))
 const Products = React.lazy(() => import('./views/sales/Products'))
+const Devis = React.lazy(() => import('./views/sales/Devis'))
+
 
 
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'));
@@ -61,6 +63,8 @@ const routes = [
 
   { path: '/sales', name: "Gestion d'achats", component: Cards, exact: true },
   { path: '/sales/products', name: 'Products', component: Products , exact: true },
+  { path: '/sales/devis', name: 'Devis', component: Devis , exact: true },
+
 
   { path: '/base', name: 'Base', component: Cards, exact: true },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', component: Breadcrumbs },

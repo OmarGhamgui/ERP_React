@@ -74,6 +74,11 @@ const _nav =  [
         name: 'Produits',
         to: '/sales/products',
       },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Devis',
+        to: '/sales/devis',
+      }
      
      
     ],
